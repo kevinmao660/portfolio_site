@@ -7,12 +7,12 @@ export const site = {
   heroEyebrow: "",
   heroTitleLine1: "KEVIN",
   heroTitleLine2: "MAO",
-  bio: "Hi, I’m Kevin — I wanted to try vibe coding, so I made this site with Google Stitch and Cursor.",
+  bio: "Hi, I’m Kevin — I'm currently a student @ Duke studying CS. Was interested in Google Stitch and Cursor, so I vibecoded this site to try it out.",
   email: "kvn.mao23@gmail.com",
   github: "https://github.com/kevinmao660",
   linkedin: "https://www.linkedin.com/in/kevin-mao-56bbb320b/",
   /** Pinned-style project (update path if the repo name differs) */
-  repoKalshiUi: "https://github.com/kevinmao660/kalshi_UI",
+  repoKalshiUi: "https://github.com/kevinmao660/kalshi_UI-",
   /** This portfolio’s repo (update if your remote name differs) */
   repoPortfolio: "https://github.com/kevinmao660/portfolio_site",
   /** Coursework / secondary repos */

@@ -55,7 +55,7 @@ export const siteData: SiteData = {
     name: "Kevin",
     label: "STITCH + CURSOR",
     title: "Vibe-coded portfolio experiment.",
-    bio: "Hi, I’m Kevin — I wanted to try vibe coding, so I made this site with Google Stitch and Cursor.",
+    bio: "Hi, I’m Kevin — I'm currently a student @ Duke studying CS. Was interested in Google Stitch and Cursor, so I vibecoded this site to try it out.",
     status: "Built with Stitch layouts and Cursor.",
     location: "Durham, NC",
   },
@@ -90,7 +90,7 @@ export const siteData: SiteData = {
       period: "May 2026 — Aug 2026",
       location: "New York, NY",
       achievements: [
-        "Joining the CV/ML infrastructure team to build and operate production systems for computer vision and machine learning at scale.",
+        "Joining the CV/ML infrastructure team to build and operate production systems for computer vision and machine learning at scale. Not sure what sport I will be working on yet!",
       ],
     },
     {

@@ -8,7 +8,6 @@ import {
   Sparkles,
 } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
-import { CatCompanion } from "@/components/cat-companion";
 import { ExperienceTimeline } from "@/components/experience-timeline";
 import { ProjectCard } from "@/components/project-card";
 import { SocialLink } from "@/components/social-link";
@@ -36,8 +35,6 @@ export function PortfolioShell({ siteData }: PortfolioShellProps) {
 
   return (
     <div className="relative overflow-x-clip">
-      <CatCompanion />
-
       <header className="sticky top-0 z-20 border-b border-white/10 bg-background/70 backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-10">
           <Link
