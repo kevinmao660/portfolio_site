@@ -219,12 +219,17 @@ export function StitchPortfolio() {
                 text={site.projectsSectionEyebrow}
                 className="font-mono mb-2 block text-xs text-black"
               />
-              <TypeOnView
-                as="h2"
-                text="Projects"
-                className="font-headline text-4xl font-extrabold uppercase tracking-tighter text-black"
-                stepMs={24}
-              />
+              <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+                <TypeOnView
+                  as="h2"
+                  text="Projects"
+                  className="font-headline text-4xl font-extrabold uppercase tracking-tighter text-black"
+                  stepMs={24}
+                />
+                <span className="font-mono text-[10px] uppercase tracking-wider text-black/45">
+                  {site.projectsSectionHint}
+                </span>
+              </div>
             </div>
 
             <ProjectGrid projects={siteData.projects} />

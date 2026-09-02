@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ArrowRight } from "lucide-react";
 import {
   AnimatePresence,
   motion,
@@ -40,9 +41,12 @@ type ProjectGridProps = {
 function ProjectCardTile({
   project,
   onOpen,
+  hint,
 }: {
   project: ProjectItem;
   onOpen: () => void;
+  /** Nudges the "view details" arrow until the visitor has opened a card at least once. */
+  hint: boolean;
 }) {
   const reducedMotion = useReducedMotion();
   const x = useMotionValue(0);
@@ -73,6 +77,8 @@ function ProjectCardTile({
       layoutId={`project-card-${project.title}`}
       role="button"
       tabIndex={0}
+      aria-haspopup="dialog"
+      aria-label={`${project.title} — view details`}
       onClick={onOpen}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
@@ -123,6 +129,27 @@ function ProjectCardTile({
               </span>
             ))}
           </div>
+
+          <div className="mt-6 flex items-center justify-between border-t border-black/10 pt-4 font-mono text-[10px] uppercase tracking-wider text-black/45 transition-colors group-hover:text-black">
+            <span>View details</span>
+            <motion.span
+              aria-hidden
+              className="flex items-center gap-1"
+              animate={
+                hint && !reducedMotion
+                  ? { x: [0, 4, 0] }
+                  : { x: 0 }
+              }
+              transition={
+                hint && !reducedMotion
+                  ? { duration: 1.4, repeat: Infinity, repeatDelay: 1.6, ease: "easeInOut" }
+                  : { duration: 0.2 }
+              }
+            >
+              <span className="h-px w-4 bg-current transition-all duration-300 group-hover:w-6" />
+              <ArrowRight className="h-3 w-3" />
+            </motion.span>
+          </div>
         </div>
       </motion.div>
     </motion.div>
@@ -131,6 +158,7 @@ function ProjectCardTile({
 
 export function ProjectGrid({ projects }: ProjectGridProps) {
   const [openTitle, setOpenTitle] = useState<string | null>(null);
+  const [hasOpened, setHasOpened] = useState(false);
   const openProject = projects.find((p) => p.title === openTitle) ?? null;
   const diagram = openProject ? PROJECT_DIAGRAMS[openProject.title] : undefined;
 
@@ -153,11 +181,15 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
   return (
     <MotionConfig reducedMotion="user">
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project) => (
+        {projects.map((project, i) => (
           <ProjectCardTile
             key={project.title}
             project={project}
-            onOpen={() => setOpenTitle(project.title)}
+            hint={!hasOpened && i === 0}
+            onOpen={() => {
+              setOpenTitle(project.title);
+              setHasOpened(true);
+            }}
           />
         ))}
       </div>

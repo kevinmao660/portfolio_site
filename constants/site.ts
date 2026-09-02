@@ -21,4 +21,6 @@ export const site = {
   copyright: "© 2026 Kevin Mao. All rights reserved.",
   /** Projects section small label */
   projectsSectionEyebrow: "Selected Work",
+  /** Tells visitors the project cards open — the grid is not a static list. */
+  projectsSectionHint: "Click any card for architecture, numbers, and links",
 } as const;
