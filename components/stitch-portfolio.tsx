@@ -1,26 +1,20 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { HoverCorners } from "@/components/hover-corners";
+import { ProjectGrid } from "@/components/project-grid";
+import { ScrambleText } from "@/components/scramble-text";
 import { SpaceBackdrop } from "@/components/space-backdrop";
+import { SpotlightGrid } from "@/components/spotlight-grid";
 import { TypeOnView } from "@/components/type-on-view";
 import { siteData } from "@/constants/site-data";
 import { site } from "@/constants/site";
 
-const kalshiProject =
-  siteData.projects.find((p) => p.title.startsWith("Kalshi")) ?? siteData.projects[0];
-const miniAmazonProject =
-  siteData.projects.find((p) => p.title.startsWith("Mini-Amazon")) ?? siteData.projects[1];
-const portfolioProject =
-  siteData.projects.find((p) => p.title === "Portfolio Site") ?? siteData.projects[2];
-
-const NAV_IDS = ["about", "experience", "work", "education"] as const;
+const NAV_IDS = ["about", "experience", "projects", "education"] as const;
 /** Includes sections not in the nav (e.g. `#contact`) for initial hash scroll */
 const HASH_IDS = [...NAV_IDS, "contact"] as const;
 
 export function StitchPortfolio() {
-  const workCarouselRef = useRef<HTMLDivElement | null>(null);
-  const workCycleRef = useRef<HTMLDivElement | null>(null);
-
   const [activeSection, setActiveSection] = useState<string>("about");
   const [pulseNav, setPulseNav] = useState<string | null>(null);
 
@@ -72,59 +66,6 @@ export function StitchPortfolio() {
     });
   }, []);
 
-  /** Always-on horizontal motion for project cards (seamless loop). */
-  useEffect(() => {
-    const root = workCarouselRef.current;
-    const cycle = workCycleRef.current;
-    if (!root || !cycle) return;
-
-    let alive = true;
-    let rafId = 0;
-    let lastTs = 0;
-    const PX_PER_SEC = 44;
-
-    const loop = (ts: number) => {
-      if (!alive) return;
-      rafId = requestAnimationFrame(loop);
-
-      if (!lastTs) {
-        lastTs = ts;
-        return;
-      }
-
-      const dt = Math.min((ts - lastTs) / 1000, 0.05);
-      lastTs = ts;
-
-      const loopWidth = cycle.scrollWidth;
-      if (loopWidth <= 0) return;
-
-      let next = root.scrollLeft + PX_PER_SEC * dt;
-      if (next >= loopWidth) {
-        next -= loopWidth;
-      }
-
-      root.scrollLeft = next;
-    };
-
-    rafId = requestAnimationFrame(loop);
-
-    const ro = new ResizeObserver(() => {
-      lastTs = 0;
-      const loopWidth = cycle.scrollWidth;
-      if (loopWidth > 0) {
-        root.scrollLeft = root.scrollLeft % loopWidth;
-      }
-    });
-    ro.observe(root);
-    ro.observe(cycle);
-
-    return () => {
-      alive = false;
-      cancelAnimationFrame(rafId);
-      ro.disconnect();
-    };
-  }, []);
-
   const navLinkClass = (id: string) =>
     `font-label border-b pb-1 text-xs font-bold uppercase tracking-tighter transition-colors ${
       activeSection === id
@@ -134,31 +75,35 @@ export function StitchPortfolio() {
 
   return (
     <>
-      <div className="ghost-grid pointer-events-none fixed inset-0 z-0" />
+      <SpotlightGrid />
       <SpaceBackdrop />
 
       <nav className="fixed top-0 z-50 mx-auto flex w-full items-center justify-between border-b border-black/10 bg-[#ffffff] px-6 py-4">
         <div className="font-mono text-lg font-black tracking-widest text-black">{site.navMark}</div>
         <div className="hidden gap-8 md:ml-auto md:flex">
           <a className={navLinkClass("about")} href="#about" onClick={(e) => onNavClick(e, "about")}>
-            ABOUT
+            <ScrambleText as="span" text="ABOUT" />
           </a>
           <a
             className={navLinkClass("experience")}
             href="#experience"
             onClick={(e) => onNavClick(e, "experience")}
           >
-            EXPERIENCE
+            <ScrambleText as="span" text="EXPERIENCE" delayMs={40} />
           </a>
-          <a className={navLinkClass("work")} href="#work" onClick={(e) => onNavClick(e, "work")}>
-            WORK
+          <a
+            className={navLinkClass("projects")}
+            href="#projects"
+            onClick={(e) => onNavClick(e, "projects")}
+          >
+            <ScrambleText as="span" text="PROJECTS" delayMs={80} />
           </a>
           <a
             className={navLinkClass("education")}
             href="#education"
             onClick={(e) => onNavClick(e, "education")}
           >
-            EDUCATION
+            <ScrambleText as="span" text="EDUCATION" delayMs={120} />
           </a>
         </div>
       </nav>
@@ -266,359 +211,23 @@ export function StitchPortfolio() {
           </div>
         </section>
 
-        <section className="px-6 py-24 md:px-12 lg:px-24" id="work">
-          <div className="mb-16 border-b border-black/10 pb-8">
-            <TypeOnView
-              as="span"
-              text={site.workSectionEyebrow}
-              className="font-mono mb-2 block text-xs text-black"
-              stepMs={26}
-            />
-            <TypeOnView
-              as="h2"
-              text="Other Things I'm Involved With"
-              className="font-headline text-4xl font-extrabold uppercase tracking-tighter text-black"
-              stepMs={24}
-            />
-          </div>
-
-          <div className="relative -mx-1">
-            <div
-              ref={workCarouselRef}
-              className="work-carousel overflow-x-auto overflow-y-hidden overscroll-x-contain pb-4 pl-1 pr-1 pt-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            >
-              <div className="flex w-max gap-4 md:gap-5">
-                <div ref={workCycleRef} className="flex gap-4 md:gap-5">
-                  <div
-                    data-work-slide
-                    className="flex h-[420px] w-[min(92vw,52rem)] shrink-0 flex-col justify-between border border-black/15 bg-neutral-100 p-8 md:h-[500px]"
-                  >
-                    <div>
-                      <span className="material-symbols-outlined mb-4 text-black">folder_open</span>
-                      <TypeOnView
-                        as="h3"
-                        text="All Projects"
-                        className="font-headline text-2xl font-bold text-black"
-                        stepMs={24}
-                      />
-                      <TypeOnView
-                        as="p"
-                        text="One place for Kalshi UI, Mini-Amazon, this portfolio, and systems projects."
-                        className="font-mono mt-2 max-w-xl text-[10px] text-black/60"
-                        stepMs={14}
-                        delayMs={120}
-                      />
-                      <ul className="mt-4 space-y-1 border-l border-black/10 pl-3 font-mono text-[10px] text-black/55">
-                        <li>Live market data + execution UI (Kalshi)</li>
-                        <li>Full-stack commerce simulation (Flask + Postgres)</li>
-                        <li>Systems coursework in C (cache + memory)</li>
-                      </ul>
-                    </div>
-                    <div className="space-y-3">
-                      <div className="flex flex-wrap gap-2">
-                        {siteData.projects.map((project) => (
-                          <a
-                            key={project.title}
-                            href={project.githubUrl || site.github}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="border border-black/15 bg-white px-3 py-1.5 font-mono text-[10px] text-black/80 transition-colors hover:bg-black hover:text-white"
-                          >
-                            {project.title}
-                          </a>
-                        ))}
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        {["TYPESCRIPT", "PYTHON", "C", "FULL-STACK"].map((tag) => (
-                          <span
-                            key={tag}
-                            className="border border-black/10 bg-white px-2 py-1 font-mono text-[9px] text-black/70"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  <a
-                    data-work-slide
-                    href={site.linkedin}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex h-[500px] w-[min(92vw,52rem)] shrink-0 flex-col justify-between border border-black/15 bg-neutral-100 p-8"
-                    id="project-card-primary"
-                  >
-                    <div>
-                      <span className="material-symbols-outlined mb-4 text-black">groups</span>
-                      <TypeOnView
-                        as="h3"
-                        text="Campus Involvement"
-                        className="font-headline text-2xl font-bold tracking-tight text-black"
-                        stepMs={22}
-                      />
-                      <TypeOnView
-                        as="p"
-                        text="Some groups I spend a lot of time with at Duke."
-                        className="font-mono mt-2 max-w-xl text-[10px] text-black/60"
-                        stepMs={14}
-                        delayMs={120}
-                      />
-                      <ul className="mt-4 space-y-1 border-l border-black/10 pl-3 font-mono text-[10px] text-black/55">
-                        <li>HackDuke: co-led planning for 250+ attendee hackathon</li>
-                        <li>Product@Duke: co-president, workshops + mentorship</li>
-                        <li>Cross-functional work across engineering/design/logistics</li>
-                      </ul>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {["HACKDUKE", "PRODUCT@DUKE"].map((tag) => (
-                        <span
-                          key={tag}
-                          className="border border-black/10 bg-white px-2 py-1 font-mono text-[9px] text-black/70"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                      {["LEADERSHIP", "OPERATIONS", "PRODUCT"].map((tag) => (
-                        <span
-                          key={tag}
-                          className="border border-black/10 bg-white px-2 py-1 font-mono text-[9px] text-black/70"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </a>
-
-                  <a
-                    data-work-slide
-                    href={site.repoPortfolio}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex h-[500px] w-[min(92vw,52rem)] shrink-0 flex-col justify-between border border-black/15 bg-neutral-100 p-8"
-                  >
-                    <div>
-                      <span className="material-symbols-outlined mb-4 text-black">science</span>
-                      <TypeOnView
-                        as="h3"
-                        text="Currently Exploring"
-                        className="font-headline text-xl font-bold tracking-tight text-black"
-                        stepMs={22}
-                      />
-                      <TypeOnView
-                        as="p"
-                        text="Building with Stitch + Cursor, and experimenting with product-y interfaces."
-                        className="font-mono mt-2 max-w-xl text-[10px] text-black/60"
-                        stepMs={14}
-                        delayMs={120}
-                      />
-                      <ul className="mt-4 space-y-1 border-l border-black/10 pl-3 font-mono text-[10px] text-black/55">
-                        <li>Motion-heavy UI systems and interaction polish</li>
-                        <li>AI-assisted workflows for rapid iteration</li>
-                        <li>Balancing fast shipping with clean architecture</li>
-                      </ul>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {["AI/ML", "FRONTEND", "SYSTEMS", "STITCH", "CURSOR", "NEXT.JS"].map((tag) => (
-                        <span
-                          key={tag}
-                          className="border border-black/10 bg-white px-2 py-1 font-mono text-[9px] text-black/70"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </a>
-
-                  <a
-                    data-work-slide
-                    href={site.linkedin}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex h-[420px] w-[min(92vw,52rem)] shrink-0 flex-col justify-between border border-black/15 bg-neutral-100 p-8 md:h-[500px]"
-                  >
-                    <div>
-                      <span className="material-symbols-outlined mb-4 text-black">handshake</span>
-                      <TypeOnView
-                        as="h3"
-                        text="Open To"
-                        className="font-headline text-lg font-bold text-black"
-                        stepMs={26}
-                      />
-                      <TypeOnView
-                        as="p"
-                        text="Collaborating on products, internships, and side projects."
-                        className="font-mono mt-2 text-[10px] text-black/55"
-                        stepMs={16}
-                        delayMs={100}
-                      />
-                      <ul className="mt-4 space-y-1 border-l border-black/10 pl-3 font-mono text-[10px] text-black/55">
-                        <li>Software engineering internships and new grad roles</li>
-                        <li>Project collaborations with strong product focus</li>
-                        <li>Hackathon teams and technical communities</li>
-                      </ul>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {["SWE", "ML INFRA", "FULL-STACK", "PRODUCT", "HACKATHONS"].map((tag) => (
-                        <span
-                          key={tag}
-                          className="border border-black/10 bg-white px-2 py-1 font-mono text-[9px] text-black/70"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </a>
-                </div>
-
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none flex gap-4 md:gap-5"
-                >
-                  <div
-                    data-work-slide
-                    className="flex h-[420px] w-[min(92vw,52rem)] shrink-0 flex-col justify-between border border-black/15 bg-neutral-100 p-8 md:h-[500px]"
-                  >
-                    <div>
-                      <span className="material-symbols-outlined mb-4 text-black">folder_open</span>
-                      <h3 className="font-headline text-2xl font-bold text-black">All Projects</h3>
-                      <p className="font-mono mt-2 max-w-xl text-[10px] text-black/60">
-                        One place for Kalshi UI, Mini-Amazon, this portfolio, and systems projects.
-                      </p>
-                      <ul className="mt-4 space-y-1 border-l border-black/10 pl-3 font-mono text-[10px] text-black/55">
-                        <li>Live market data + execution UI (Kalshi)</li>
-                        <li>Full-stack commerce simulation (Flask + Postgres)</li>
-                        <li>Systems coursework in C (cache + memory)</li>
-                      </ul>
-                    </div>
-                    <div className="space-y-3">
-                      <div className="flex flex-wrap gap-2">
-                        {siteData.projects.map((project) => (
-                          <span
-                            key={`clone-${project.title}`}
-                            className="border border-black/15 bg-white px-3 py-1.5 font-mono text-[10px] text-black/80"
-                          >
-                            {project.title}
-                          </span>
-                        ))}
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        {["TYPESCRIPT", "PYTHON", "C", "FULL-STACK"].map((tag) => (
-                          <span
-                            key={`clone-${tag}`}
-                            className="border border-black/10 bg-white px-2 py-1 font-mono text-[9px] text-black/70"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  <a
-                    data-work-slide
-                    href={site.linkedin}
-                    tabIndex={-1}
-                    className="flex h-[500px] w-[min(92vw,52rem)] shrink-0 flex-col justify-between border border-black/15 bg-neutral-100 p-8"
-                  >
-                    <div>
-                      <span className="material-symbols-outlined mb-4 text-black">groups</span>
-                      <h3 className="font-headline text-2xl font-bold tracking-tight text-black">
-                        Campus Involvement
-                      </h3>
-                      <p className="font-mono mt-2 max-w-xl text-[10px] text-black/60">
-                        Some groups I spend a lot of time with at Duke.
-                      </p>
-                      <ul className="mt-4 space-y-1 border-l border-black/10 pl-3 font-mono text-[10px] text-black/55">
-                        <li>HackDuke: co-led planning for 250+ attendee hackathon</li>
-                        <li>Product@Duke: co-president, workshops + mentorship</li>
-                        <li>Cross-functional work across engineering/design/logistics</li>
-                      </ul>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {["HACKDUKE", "PRODUCT@DUKE"].map((tag) => (
-                        <span
-                          key={tag}
-                          className="border border-black/10 bg-white px-2 py-1 font-mono text-[9px] text-black/70"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                      {["LEADERSHIP", "OPERATIONS", "PRODUCT"].map((tag) => (
-                        <span
-                          key={tag}
-                          className="border border-black/10 bg-white px-2 py-1 font-mono text-[9px] text-black/70"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </a>
-
-                  <a
-                    data-work-slide
-                    href={site.repoPortfolio}
-                    tabIndex={-1}
-                    className="flex h-[500px] w-[min(92vw,52rem)] shrink-0 flex-col justify-between border border-black/15 bg-neutral-100 p-8"
-                  >
-                    <div>
-                      <span className="material-symbols-outlined mb-4 text-black">science</span>
-                      <h3 className="font-headline text-xl font-bold tracking-tight text-black">
-                        Currently Exploring
-                      </h3>
-                      <p className="font-mono mt-2 max-w-xl text-[10px] text-black/60">
-                        Building with Stitch + Cursor, and experimenting with product-y interfaces.
-                      </p>
-                      <ul className="mt-4 space-y-1 border-l border-black/10 pl-3 font-mono text-[10px] text-black/55">
-                        <li>Motion-heavy UI systems and interaction polish</li>
-                        <li>AI-assisted workflows for rapid iteration</li>
-                        <li>Balancing fast shipping with clean architecture</li>
-                      </ul>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {["AI/ML", "FRONTEND", "SYSTEMS", "STITCH", "CURSOR", "NEXT.JS"].map((tag) => (
-                        <span
-                          key={`clone-${tag}`}
-                          className="border border-black/10 bg-white px-2 py-1 font-mono text-[9px] text-black/70"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </a>
-
-                  <a
-                    data-work-slide
-                    href={site.linkedin}
-                    tabIndex={-1}
-                    className="flex h-[420px] w-[min(92vw,52rem)] shrink-0 flex-col justify-between border border-black/15 bg-neutral-100 p-8 md:h-[500px]"
-                  >
-                    <div>
-                      <span className="material-symbols-outlined mb-4 text-black">handshake</span>
-                      <h3 className="font-headline text-lg font-bold text-black">Open To</h3>
-                      <p className="font-mono mt-2 text-[10px] text-black/55">
-                        Collaborating on products, internships, and side projects.
-                      </p>
-                      <ul className="mt-4 space-y-1 border-l border-black/10 pl-3 font-mono text-[10px] text-black/55">
-                        <li>Software engineering internships and new grad roles</li>
-                        <li>Project collaborations with strong product focus</li>
-                        <li>Hackathon teams and technical communities</li>
-                      </ul>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {["SWE", "ML INFRA", "FULL-STACK", "PRODUCT", "HACKATHONS"].map((tag) => (
-                        <span
-                          key={`clone-${tag}`}
-                          className="border border-black/10 bg-white px-2 py-1 font-mono text-[9px] text-black/70"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </a>
-                </div>
-              </div>
+        <section className="border-t border-black/10 bg-white px-6 py-24 md:px-12 lg:px-24" id="projects">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-16 border-b border-black/10 pb-8">
+              <ScrambleText
+                as="span"
+                text={site.projectsSectionEyebrow}
+                className="font-mono mb-2 block text-xs text-black"
+              />
+              <TypeOnView
+                as="h2"
+                text="Projects"
+                className="font-headline text-4xl font-extrabold uppercase tracking-tighter text-black"
+                stepMs={24}
+              />
             </div>
+
+            <ProjectGrid projects={siteData.projects} />
           </div>
         </section>
 
@@ -636,17 +245,15 @@ export function StitchPortfolio() {
               />
               <div className="h-1 w-12 bg-black" />
             </div>
-            <article className="border border-black/10 bg-neutral-50 p-8 md:p-10">
-              <div className="mb-2 flex flex-col items-start gap-2 md:flex-row md:items-center md:justify-between">
+            <article className="group relative border border-black/10 bg-neutral-50 p-8 md:p-10">
+              <HoverCorners />
+              <div className="mb-2">
                 <TypeOnView
                   as="h3"
                   text={siteData.education.role}
                   className="font-headline text-xl font-bold tracking-tight text-black"
                   stepMs={22}
                 />
-                <span className="font-mono bg-black/5 px-2 py-1 text-[10px] uppercase text-black">
-                  {siteData.education.period}
-                </span>
               </div>
               <TypeOnView
                 as="p"

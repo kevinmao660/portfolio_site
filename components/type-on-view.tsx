@@ -89,11 +89,6 @@ export function TypeOnView({
       aria-label={text}
     >
       {visible}
-      {!reducedMotion && count < chars.length ? (
-        <span className="typing-cursor-inline" aria-hidden>
-          |
-        </span>
-      ) : null}
     </Tag>
   );
 }

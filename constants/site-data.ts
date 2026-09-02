@@ -17,13 +17,48 @@ export type ExperienceItem = {
   achievements: string[];
 };
 
+/**
+ * Real, measured engineering stats for a project — not estimates. Lines are
+ * authored source only (excludes generated/lockfile JSON, node_modules, caches).
+ * Sourced by cloning/inspecting the actual repo; update by re-measuring, not guessing.
+ */
+export type ProjectStats = {
+  /** Source lines by language, e.g. { TypeScript: 5300, CSS: 7 } */
+  languages: Record<string, number>;
+  files: number;
+  /** Git-derived, so absent on anything not kept in a repo. */
+  commits?: number;
+  firstCommit?: string;
+  lastCommit?: string;
+  /** Stands in for the commit range when there is no git history to read one out of. */
+  activePeriod?: string;
+  dependencies: number;
+  testFiles?: number;
+  testLines?: number;
+};
+
+export type ProjectDbStat = {
+  label: string;
+  value: number;
+  /** Appended after the formatted number, e.g. "x" for a return multiple. */
+  suffix?: string;
+};
+
 export type ProjectItem = {
   title: string;
   summary: string;
   tech: string[];
-  githubUrl: string;
+  /** Omitted when the project isn't in a public repo — the card then shows no "View Code". */
+  githubUrl?: string;
   liveUrl: string;
   status: string;
+  stats?: ProjectStats;
+  /** Live operational numbers queried directly from the project's own database — not estimates. */
+  dbStats?: ProjectDbStat[];
+  /** Extra color for the dbStats block — no dollar amounts. */
+  dbStatsCaption?: string;
+  /** Date this snapshot was actually queried — update whenever dbStats is re-measured. */
+  dbStatsAsOf?: string;
 };
 
 export type SocialLinkItem = {
@@ -53,10 +88,10 @@ export type SiteData = {
 export const siteData: SiteData = {
   person: {
     name: "Kevin",
-    label: "STITCH + CURSOR",
-    title: "Vibe-coded portfolio experiment.",
-    bio: "Hi, I’m Kevin — I'm currently a student @ Duke studying CS. Was interested in Google Stitch and Cursor, so I vibecoded this site to try it out.",
-    status: "Built with Stitch layouts and Cursor.",
+    label: "CLAUDE CODE + CODEX + STITCH",
+    title: "Vibe-coding practice, and a place to put the work.",
+    bio: "Hi, I’m Kevin — I'm currently a student @ Duke studying CS. Wanted to get better at vibe coding and put some of the things I've been working on in one place, so I built this with Claude Code, Codex and Google Stitch.",
+    status: "Built with Claude Code, Codex and Google Stitch.",
     location: "Durham, NC",
   },
   navigation: [
@@ -85,12 +120,17 @@ export const siteData: SiteData = {
   ],
   experience: [
     {
-      company: "Genius Sports — GeniusIQ CV/ML Infra",
-      role: "Incoming Software Engineer Intern",
+      company: "Genius Sports (Second Spectrum) — Dragon AI & CV Infrastructure Team",
+      role: "Software Engineer Intern",
       period: "May 2026 — Aug 2026",
       location: "New York, NY",
       achievements: [
-        "Joining the CV/ML infrastructure team to build and operate production systems for computer vision and machine learning at scale. Not sure what sport I will be working on yet!",
+        "Dragon is Genius Sports’ AI-powered 25 Hz multi-camera CV system producing 3.1M position samples per game.",
+        "Rebuilt Kazaam, Dragon’s operations and game-lifecycle layer, as sole architect coordinating CV pipeline components, running automated health checks and routing alerts across 85+ competitions (NBA, EPL, UCL, etc.).",
+        "Replaced in-memory daemons with a Postgres-backed Graphile Worker system: leases and watchdog recovery prevent duplicate or lost runs, and releasing leases on shutdown cuts redeploy downtime to near-zero.",
+        "Built the full competition management stack across four layers: Kazaam REST API, a Data Graph GraphQL module, a Control Center operator UI, and Auth0 M2M-based permissions spanning all three services.",
+        "Diagnosed and fixed a silent alert gap in Dragon’s Temporal pre-run workflow by wiring alerting into Kazaam.",
+        "Directed AI coding agents (Cursor, skills, subagents) across development, deployment, code review, and diagnostics via Grafana and Slack, running them in parallel across git worktrees for onboarding and testing.",
       ],
     },
     {
@@ -132,40 +172,71 @@ export const siteData: SiteData = {
   },
   projects: [
     {
-      title: "Kalshi Trading Terminal",
+      title: "Polymarket Incentives Bot",
       summary:
-        "Full-stack terminal for Kalshi markets: hot-volume screener, live trading, WebSocket market data, SSE for order books and trades, portfolio and order management.",
-      tech: ["TypeScript", "React", "Express", "Tailwind CSS", "WebSocket", "SSE"],
-      githubUrl: "https://github.com/kevinmao660/kalshi_UI",
+        "One of the things I've been working on the most recently. Prediction markets like Polymarket pay you for keeping limit orders resting on certain markets, so this is a bot suite that goes and collects those liquidity rewards — it scans for which markets are actually worth sitting on, deploys a bot to each one, and pulls out when they stop paying. The whole thing runs on a DigitalOcean droplet 24/7 and has been live for a few months now. The numbers below are queried straight out of its own database, not estimated.",
+      tech: [
+        "Python",
+        "FastAPI",
+        "React",
+        "Vite",
+        "TypeScript",
+        "Tailwind CSS",
+        "SQLite",
+        "Postgres",
+        "WebSockets",
+      ],
+      githubUrl: "https://github.com/kevinmao660/polymarket_incentives_bot",
       liveUrl: "",
-      status: "Public repo",
+      status: "Running live",
+      stats: {
+        languages: { Python: 17828, TypeScript: 10529, CSS: 70 },
+        files: 73,
+        commits: 63,
+        firstCommit: "2026-06-12",
+        lastCommit: "2026-09-01",
+        dependencies: 28,
+        testFiles: 27,
+        testLines: 4769,
+      },
+      dbStats: [
+        { label: "Deploys", value: 150320 },
+        { label: "Hours of uptime", value: 670 },
+        { label: "Return on seed", value: 132, suffix: "x" },
+      ],
+      dbStatsCaption:
+        "85 days live · ~1 deploy every 49s, nonstop · 5,063 distinct markets traded · most persistent: 2,805 redeploys on a single tennis match in one 5h22m window",
+      dbStatsAsOf: "2026-08-22",
     },
     {
-      title: "Mini-Amazon E-Commerce Platform",
+      title: "Buckets",
       summary:
-        "Full-stack e-commerce simulation with browsing, ordering, and seller inventory; PostgreSQL-backed with improved order status flows.",
-      tech: ["Python", "Flask", "PostgreSQL", "HTML/CSS"],
-      githubUrl: "https://github.com/kevinmao660",
+        "Something I've been thinking about more recently. People carry around a lot that matters — to-do lists, half-formed ideas, the things they know they'll forget — and it ends up scattered across notes apps, Notion docs and everywhere else, so there's always a delay between having a thought and finding it again. Buckets is my attempt at collapsing that into a single entry point: you say the thought, and instead of you deciding where it goes, AI files it for you and learns from any correction you make. Still early, and still very much something I'm working out.",
+      tech: [
+        "TypeScript",
+        "Next.js",
+        "React",
+        "Server Actions",
+        "SQLite",
+        "Anthropic API",
+      ],
       liveUrl: "",
-      status: "Coursework",
+      status: "In development",
+      stats: {
+        languages: { TypeScript: 4179, CSS: 1916 },
+        files: 31,
+        activePeriod: "Aug — Sep 2026",
+        dependencies: 10,
+      },
     },
     {
       title: "Portfolio Site",
       summary:
-        "This site — Next.js, Tailwind, motion, and modular content for quick updates.",
-      tech: ["Next.js", "React", "Tailwind CSS", "TypeScript"],
+        "The thing you're looking at. Started as an excuse to point Claude Code, Codex and Google Stitch at the same repo and see what came out, and turned into a rabbit hole of typing animations, scrambling nav links and little corner brackets that appear when you hover. No backend, no database, no analytics — just one big typed object and an unreasonable amount of framer-motion. Poke at it.",
+      tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion"],
       githubUrl: "https://github.com/kevinmao660/portfolio_site",
       liveUrl: "",
-      status: "Live",
-    },
-    {
-      title: "Systems in C",
-      summary:
-        "Cache simulator (LRU, write-back) and dynamic memory allocator with explicit free lists, coalescing, and heap optimization—validating correctness across configurations.",
-      tech: ["C"],
-      githubUrl: "https://github.com/kevinmao660",
-      liveUrl: "",
-      status: "Coursework",
+      status: "You're on it",
     },
   ],
   socials: [

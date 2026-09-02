@@ -76,6 +76,22 @@ main > section[id]:target {
   opacity: 0.35;
 }
 
+.ghost-grid--spotlight {
+  opacity: 0.95;
+  -webkit-mask-image: radial-gradient(
+    380px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.22) 55%,
+    rgba(0, 0, 0, 0.04) 100%
+  );
+  mask-image: radial-gradient(
+    380px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.22) 55%,
+    rgba(0, 0, 0, 0.04) 100%
+  );
+}
+
 /* --- Minimal backdrop texture (no circles) --- */
 .space-backdrop {
   overflow: hidden;
@@ -111,12 +127,6 @@ main > section[id]:target {
   content: "|";
   animation: stitch-blink 1s step-end infinite;
   color: #000000;
-}
-
-.typing-cursor-inline {
-  margin-left: 0.06em;
-  color: #000000;
-  animation: stitch-blink 1s step-end infinite;
 }
 
 @keyframes stitch-blink {

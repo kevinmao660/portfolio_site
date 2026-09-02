@@ -7,7 +7,7 @@ export const site = {
   heroEyebrow: "",
   heroTitleLine1: "KEVIN",
   heroTitleLine2: "MAO",
-  bio: "Hi, I’m Kevin — I'm currently a student @ Duke studying CS. Was interested in Google Stitch and Cursor, so I vibecoded this site to try it out.",
+  bio: "Hi, I’m Kevin — I'm currently a student @ Duke studying CS. Wanted to get better at vibe coding and put some of the things I've been working on in one place, so I built this with Claude Code, Codex and Google Stitch.",
   email: "kvn.mao23@gmail.com",
   github: "https://github.com/kevinmao660",
   linkedin: "https://www.linkedin.com/in/kevin-mao-56bbb320b/",
@@ -19,6 +19,6 @@ export const site = {
   repoGithubProfile: "https://github.com/kevinmao660",
   footerSlug: "Kevin Mao — portfolio",
   copyright: "© 2026 Kevin Mao. All rights reserved.",
-  /** Work section small label */
-  workSectionEyebrow: "Portfolio",
+  /** Projects section small label */
+  projectsSectionEyebrow: "Selected Work",
 } as const;
