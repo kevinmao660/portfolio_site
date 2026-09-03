@@ -23,7 +23,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: `${site.name} · Portfolio`,
-  description: site.bio,
+  description: site.metaDescription,
 };
 
 export default function RootLayout({

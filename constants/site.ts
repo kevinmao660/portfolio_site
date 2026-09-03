@@ -7,7 +7,11 @@ export const site = {
   heroEyebrow: "",
   heroTitleLine1: "KEVIN",
   heroTitleLine2: "MAO",
-  bio: "Hi, I’m Kevin — I'm currently a student @ Duke studying CS. Wanted to get better at vibe coding and put some of the things I've been working on in one place, so I built this with Claude Code, Codex and Google Stitch.",
+  /** Hero line under the name */
+  bio: "I built this. Wanted to see how vibe coding a frontend works, and to put some of the things I've been working on in one place.",
+  /** Search results and link unfurls — the hero line is too short to say anything there. */
+  metaDescription:
+    "Kevin Mao — CS student at Duke. Projects, experience, and the things I've been building.",
   email: "kvn.mao23@gmail.com",
   github: "https://github.com/kevinmao660",
   linkedin: "https://www.linkedin.com/in/kevin-mao-56bbb320b/",
