@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <title>K. Mao</title>
+  <rect width="32" height="32" fill="#000000" />
+  <path
+    fill="#ffffff"
+    d="M6 6 H11 V14.2 L19.2 6 H25.6 L15.6 16 L25.6 26 H19.2 L11 17.8 V26 H6 Z"
+  />
+</svg>
