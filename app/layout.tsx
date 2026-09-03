@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { site } from "@/constants/site";
 import "./globals.css";
 
@@ -31,6 +32,7 @@ export default function RootLayout({
         className={`${inter.variable} ${ibmPlexMono.variable} bg-background text-on-surface selection:bg-black selection:text-white overflow-x-hidden antialiased`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );

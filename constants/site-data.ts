@@ -234,7 +234,7 @@ export const siteData: SiteData = {
       summary:
         "The thing you're looking at. Started as an excuse to point Claude Code, Codex and Google Stitch at the same repo and see what came out, and turned into a rabbit hole of typing animations, scrambling nav links and little corner brackets that appear when you hover. Poke at it.",
       technical:
-        "Next.js App Router, statically prerendered, with no backend, no database and no analytics. Every section renders at build time from one typed object in constants/, the diagrams are hand-authored inline SVG rather than a charting library, and the typing and scramble effects are IntersectionObserver-driven components that respect prefers-reduced-motion. Deploys to Vercel on push to main.",
+        "Next.js App Router, statically prerendered, with no backend and no database. Every section renders at build time from one typed object in constants/, the diagrams are hand-authored inline SVG rather than a charting library, and the typing and scramble effects are IntersectionObserver-driven components that respect prefers-reduced-motion. Deploys to Vercel on push to main.",
       tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion"],
       githubUrl: "https://github.com/kevinmao660/portfolio_site",
       liveUrl: "",
