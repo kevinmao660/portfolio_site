@@ -8,7 +8,7 @@ export const site = {
   heroTitleLine1: "KEVIN",
   heroTitleLine2: "MAO",
   /** Hero line under the name */
-  bio: "I built this. Wanted to see how vibe coding a frontend works, and to put some of the things I've been working on in one place.",
+  bio: "Wanted to see how vibe coding a frontend works, and to put some of the things I've been working on in one place.",
   /** Search results and link unfurls — the hero line is too short to say anything there. */
   metaDescription:
     "Kevin Mao — CS student at Duke. Projects, experience, and the things I've been building.",
