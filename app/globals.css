@@ -15,7 +15,7 @@
   --color-surface-container-lowest: #fafafa;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-headline: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-label: var(--font-space-grotesk), ui-monospace, monospace;
+  --font-label: var(--font-ibm-plex-mono), ui-monospace, monospace;
   --font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
   --radius-DEFAULT: 0px;
   --radius-lg: 0px;

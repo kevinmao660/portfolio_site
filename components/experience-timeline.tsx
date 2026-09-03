@@ -40,7 +40,7 @@ export function ExperienceTimeline({ items }: ExperienceTimelineProps) {
             </div>
 
             <div className="space-y-4">
-              {item.achievements.map((achievement, achievementIndex) => (
+              {(item.achievements ?? []).map((achievement, achievementIndex) => (
                 <div
                   key={`${item.company}-${achievementIndex}`}
                   className="flex gap-3 border-t border-white/8 pt-4 first:border-t-0 first:pt-0"

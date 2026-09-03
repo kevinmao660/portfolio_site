@@ -8,10 +8,10 @@ export const site = {
   heroTitleLine1: "KEVIN",
   heroTitleLine2: "MAO",
   /** Hero line under the name */
-  bio: "Wanted to see how vibe coding a frontend works, and to put some of the things I've been working on in one place.",
+  bio: "Wanted to see how vibe coding a frontend works, and to put some of the things I've been working on in one place. Interested in agents, distributed systems, and the infrastructure you have to build to keep them up and running.",
   /** Search results and link unfurls — the hero line is too short to say anything there. */
   metaDescription:
-    "Kevin Mao — CS student at Duke. Projects, experience, and the things I've been building.",
+    "Kevin Mao, CS student at Duke. Projects, experience, and the things I've been building.",
   email: "kvn.mao23@gmail.com",
   github: "https://github.com/kevinmao660",
   linkedin: "https://www.linkedin.com/in/kevin-mao-56bbb320b/",

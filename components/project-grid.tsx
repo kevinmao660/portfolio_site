@@ -269,17 +269,30 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
                   </motion.div>
                 ) : null}
 
-                {diagram ? (
+                {diagram || openProject.technical ? (
                   <motion.div
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.26 }}
                     className="mt-8 border-t border-black/10 pt-8"
                   >
-                    <div className="font-mono mb-4 text-[9px] uppercase tracking-wider text-black/50">
-                      {diagram.label}
-                    </div>
-                    <diagram.Component />
+                    {diagram ? (
+                      <>
+                        <div className="font-mono mb-4 text-[9px] uppercase tracking-wider text-black/50">
+                          {diagram.label}
+                        </div>
+                        <diagram.Component />
+                      </>
+                    ) : null}
+                    {openProject.technical ? (
+                      <p
+                        className={`font-mono text-xs leading-relaxed text-black/70 md:text-sm ${
+                          diagram ? "mt-8" : ""
+                        }`}
+                      >
+                        {openProject.technical}
+                      </p>
+                    ) : null}
                   </motion.div>
                 ) : null}
 

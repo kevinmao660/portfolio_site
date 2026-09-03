@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Inter, Space_Grotesk } from "next/font/google";
+import { IBM_Plex_Mono, Inter } from "next/font/google";
 import { site } from "@/constants/site";
 import "./globals.css";
 
@@ -7,12 +7,6 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["400", "700", "800", "900"],
-});
-
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
 });
 
 const ibmPlexMono = IBM_Plex_Mono({
@@ -34,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} ${ibmPlexMono.variable} bg-background text-on-surface selection:bg-black selection:text-white overflow-x-hidden antialiased`}
+        className={`${inter.variable} ${ibmPlexMono.variable} bg-background text-on-surface selection:bg-black selection:text-white overflow-x-hidden antialiased`}
       >
         {children}
       </body>

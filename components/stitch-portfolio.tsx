@@ -1,7 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { HoverCorners } from "@/components/hover-corners";
+import { useCallback, useEffect, useState } from "react";
 import { ProjectGrid } from "@/components/project-grid";
 import { ScrambleText } from "@/components/scramble-text";
 import { SpaceBackdrop } from "@/components/space-backdrop";
@@ -10,7 +9,7 @@ import { TypeOnView } from "@/components/type-on-view";
 import { siteData } from "@/constants/site-data";
 import { site } from "@/constants/site";
 
-const NAV_IDS = ["about", "experience", "projects", "education"] as const;
+const NAV_IDS = ["about", "projects", "experience"] as const;
 /** Includes sections not in the nav (e.g. `#contact`) for initial hash scroll */
 const HASH_IDS = [...NAV_IDS, "contact"] as const;
 
@@ -67,7 +66,7 @@ export function StitchPortfolio() {
   }, []);
 
   const navLinkClass = (id: string) =>
-    `font-label border-b pb-1 text-xs font-bold uppercase tracking-tighter transition-colors ${
+    `font-mono border-b pb-1 text-xs font-bold uppercase tracking-tighter transition-colors ${
       activeSection === id
         ? "border-black text-black"
         : "border-transparent text-black/45 hover:text-black"
@@ -85,25 +84,18 @@ export function StitchPortfolio() {
             <ScrambleText as="span" text="ABOUT" />
           </a>
           <a
-            className={navLinkClass("experience")}
-            href="#experience"
-            onClick={(e) => onNavClick(e, "experience")}
-          >
-            <ScrambleText as="span" text="EXPERIENCE" delayMs={40} />
-          </a>
-          <a
             className={navLinkClass("projects")}
             href="#projects"
             onClick={(e) => onNavClick(e, "projects")}
           >
-            <ScrambleText as="span" text="PROJECTS" delayMs={80} />
+            <ScrambleText as="span" text="PROJECTS" delayMs={40} />
           </a>
           <a
-            className={navLinkClass("education")}
-            href="#education"
-            onClick={(e) => onNavClick(e, "education")}
+            className={navLinkClass("experience")}
+            href="#experience"
+            onClick={(e) => onNavClick(e, "experience")}
           >
-            <ScrambleText as="span" text="EDUCATION" delayMs={120} />
+            <ScrambleText as="span" text="EXPERIENCE" delayMs={80} />
           </a>
         </div>
       </nav>
@@ -117,7 +109,7 @@ export function StitchPortfolio() {
             <TypeOnView
               as="span"
               text={site.heroEyebrow}
-              className="font-label mb-6 block text-[0.75rem] uppercase tracking-[0.3em] text-black"
+              className="font-mono mb-6 block text-[0.75rem] uppercase tracking-[0.3em] text-black"
               stepMs={48}
             />
             <h1 className="font-headline mb-8 text-5xl font-black leading-[0.9] tracking-tighter text-black md:text-7xl lg:text-9xl">
@@ -138,6 +130,31 @@ export function StitchPortfolio() {
               stepMs={28}
               delayMs={420}
             />
+          </div>
+        </section>
+
+        <section className="border-t border-black/10 bg-white px-6 py-24 md:px-12 lg:px-24" id="projects">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-16 border-b border-black/10 pb-8">
+              <ScrambleText
+                as="span"
+                text={site.projectsSectionEyebrow}
+                className="font-mono mb-2 block text-xs text-black"
+              />
+              <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+                <TypeOnView
+                  as="h2"
+                  text="Projects"
+                  className="font-headline text-4xl font-extrabold uppercase tracking-tighter text-black"
+                  stepMs={24}
+                />
+                <span className="font-mono text-[10px] uppercase tracking-wider text-black/45">
+                  {site.projectsSectionHint}
+                </span>
+              </div>
+            </div>
+
+            <ProjectGrid projects={siteData.projects} />
           </div>
         </section>
 
@@ -193,93 +210,32 @@ export function StitchPortfolio() {
                     stepMs={18}
                     delayMs={80}
                   />
-                  <ul className="space-y-2 border-l-2 border-black/10 pl-4 text-sm text-black/70">
-                    {item.achievements.map((line, lineIndex) => (
-                      <li key={`${item.company}-ach-${lineIndex}`}>
-                        <TypeOnView
-                          as="span"
-                          text={line}
-                          stepMs={12}
-                          delayMs={lineIndex * 100}
-                        />
-                      </li>
-                    ))}
-                  </ul>
+                  {item.summary ? (
+                    <TypeOnView
+                      as="p"
+                      text={item.summary}
+                      className="font-mono mb-5 text-sm leading-relaxed text-black/70"
+                      stepMs={8}
+                      delayMs={140}
+                    />
+                  ) : null}
+                  {item.achievements?.length ? (
+                    <ul className="font-mono space-y-2 border-l-2 border-black/10 pl-4 text-xs leading-relaxed text-black/55">
+                      {item.achievements.map((line, lineIndex) => (
+                        <li key={`${item.company}-ach-${lineIndex}`}>
+                          <TypeOnView
+                            as="span"
+                            text={line}
+                            stepMs={12}
+                            delayMs={lineIndex * 100}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-
-        <section className="border-t border-black/10 bg-white px-6 py-24 md:px-12 lg:px-24" id="projects">
-          <div className="mx-auto max-w-6xl">
-            <div className="mb-16 border-b border-black/10 pb-8">
-              <ScrambleText
-                as="span"
-                text={site.projectsSectionEyebrow}
-                className="font-mono mb-2 block text-xs text-black"
-              />
-              <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-                <TypeOnView
-                  as="h2"
-                  text="Projects"
-                  className="font-headline text-4xl font-extrabold uppercase tracking-tighter text-black"
-                  stepMs={24}
-                />
-                <span className="font-mono text-[10px] uppercase tracking-wider text-black/45">
-                  {site.projectsSectionHint}
-                </span>
-              </div>
-            </div>
-
-            <ProjectGrid projects={siteData.projects} />
-          </div>
-        </section>
-
-        <section
-          className="border-t border-black/10 bg-white px-6 py-24 md:px-12 lg:px-24"
-          id="education"
-        >
-          <div className="mx-auto max-w-4xl">
-            <div className="mb-12">
-              <TypeOnView
-                as="h2"
-                text="Education"
-                className="font-headline mb-4 text-4xl font-extrabold uppercase tracking-tighter text-black"
-                stepMs={24}
-              />
-              <div className="h-1 w-12 bg-black" />
-            </div>
-            <article className="group relative border border-black/10 bg-neutral-50 p-8 md:p-10">
-              <HoverCorners />
-              <div className="mb-2">
-                <TypeOnView
-                  as="h3"
-                  text={siteData.education.role}
-                  className="font-headline text-xl font-bold tracking-tight text-black"
-                  stepMs={22}
-                />
-              </div>
-              <TypeOnView
-                as="p"
-                text={`${siteData.education.company} · ${siteData.education.location}`}
-                className="font-mono mb-6 text-xs text-black/50"
-                stepMs={18}
-                delayMs={80}
-              />
-              <ul className="space-y-3 border-l-2 border-black/10 pl-4 text-sm text-black/70">
-                {siteData.education.achievements.map((line, lineIndex) => (
-                  <li key={`education-${lineIndex}`}>
-                    <TypeOnView
-                      as="span"
-                      text={line}
-                      stepMs={12}
-                      delayMs={lineIndex * 100}
-                    />
-                  </li>
-                ))}
-              </ul>
-            </article>
           </div>
         </section>
 

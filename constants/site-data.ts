@@ -14,7 +14,12 @@ export type ExperienceItem = {
   role: string;
   period: string;
   location: string;
-  achievements: string[];
+  /**
+   * First-person take on the role — what the work actually was and what it left me
+   * thinking about. This carries the roles; bullets are only used for education.
+   */
+  summary?: string;
+  achievements?: string[];
 };
 
 /**
@@ -46,7 +51,13 @@ export type ProjectDbStat = {
 
 export type ProjectItem = {
   title: string;
+  /** My take on it — why I built it, what I think of it. Also what the card shows. */
   summary: string;
+  /**
+   * How the thing actually works, in technical terms. Reads under the diagram in the
+   * modal, so it explains what the diagram is showing rather than repeating the summary.
+   */
+  technical?: string;
   tech: string[];
   /** Omitted when the project isn't in a public repo — the card then shows no "View Code". */
   githubUrl?: string;
@@ -124,39 +135,24 @@ export const siteData: SiteData = {
       role: "Software Engineer Intern",
       period: "May 2026 — Aug 2026",
       location: "New York, NY",
-      achievements: [
-        "Dragon is Genius Sports’ AI-powered 25 Hz multi-camera CV system producing 3.1M position samples per game.",
-        "Rebuilt Kazaam, Dragon’s operations and game-lifecycle layer, as sole architect coordinating CV pipeline components, running automated health checks and routing alerts across 85+ competitions (NBA, EPL, UCL, etc.).",
-        "Replaced in-memory daemons with a Postgres-backed Graphile Worker system: leases and watchdog recovery prevent duplicate or lost runs, and releasing leases on shutdown cuts redeploy downtime to near-zero.",
-        "Built the full competition management stack across four layers: Kazaam REST API, a Data Graph GraphQL module, a Control Center operator UI, and Auth0 M2M-based permissions spanning all three services.",
-        "Diagnosed and fixed a silent alert gap in Dragon’s Temporal pre-run workflow by wiring alerting into Kazaam.",
-        "Directed AI coding agents (Cursor, skills, subagents) across development, deployment, code review, and diagnostics via Grafana and Slack, running them in parallel across git worktrees for onboarding and testing.",
-      ],
+      summary:
+        "I think there's a lot of potential in the sports and AI stats industry, and it's pretty clearly going to be big. Dragon is the platform that ingests game data and tracks NBA stats straight off the camera feeds, every point, rebound, pass, assist, and I worked on the operations layer around it. That got me a lot more interested in AI infra in general, down to things like token usage. There are way more parts to the business than I originally thought, and a ton of potential in the ad space and in automating the data side of it. Genuinely cool team to be on, too.",
     },
     {
       company: "Fidelity Investments — Asset Management Database Automation",
       role: "Software Engineer Intern",
       period: "Jun 2025 — Aug 2025",
       location: "Durham, NC",
-      achievements: [
-        "Designed, built, and deployed a full-stack database healthcheck platform using Angular, FastAPI, and Oracle DB.",
-        "Developed a threaded SQL engine supporting health checks across 30+ Oracle schemas and 4,000+ tables.",
-        "Architected the platform for scale, enabling adoption across Fidelity Asset Management’s entire database estate.",
-        "Integrated with enterprise Jenkins CI/CD pipelines and deployed to EKS for reliability and scalability.",
-        "Delivered iteratively in a Scrum-based Agile workflow with regular stakeholder updates.",
-      ],
+      summary:
+        "Doing SWE in banking is way more about databases than I expected. So much of it is making sure data is always available, safe and stable, and that migrations stay chill instead of knocking something over.",
     },
     {
       company: "Students Who Sit",
       role: "Software Engineer Intern",
       period: "Aug 2024 — Jan 2025",
       location: "Durham, NC",
-      achievements: [
-        "Engineered a production Stripe Connect payment integration using Airtable, Softr, and the Stripe API.",
-        "Built a real-time sitter re-registration workflow with Airtable automations and webhook triggers.",
-        "Developed automated email notifications that increased sitter onboarding completion.",
-        "Designed Airtable–Stripe integration architecture to minimize API overhead and improve reliability.",
-      ],
+      summary:
+        "Built out the payments side here. Stripe Connect wired through Airtable and Softr so money actually moved for babysitting jobs, plus the webhook automations behind it, mostly getting sitters through their registrations and re-registrations.",
     },
   ],
   education: {
@@ -174,7 +170,9 @@ export const siteData: SiteData = {
     {
       title: "Polymarket Incentives Bot",
       summary:
-        "One of the things I've been working on the most recently. Prediction markets like Polymarket pay you for keeping limit orders resting on certain markets, so this is a bot suite that goes and collects those liquidity rewards — it scans for which markets are actually worth sitting on, deploys a bot to each one, and pulls out when they stop paying. The whole thing runs on a DigitalOcean droplet 24/7 and has been live for a few months now. The numbers below are queried straight out of its own database, not estimated.",
+        "The thing I've spent the most time on recently. Prediction markets pay you just for leaving orders resting on the book, which sounded strange enough that I wanted to see if the whole loop could run itself. It can. It's been live for a few months, and most of the work since has gone into which markets are actually worth the capital.",
+      technical:
+        "One FastAPI process holds every long-lived component and exposes them over REST plus SSE streams. A separate WebSocket proxy owns the single upstream connection and fans it out to the workers and the browser, so nothing opens a duplicate feed. State is split by durability: Postgres for run history and the market catalog, SQLite for cache and local settings. The frontend is a React dashboard reading over REST and subscribing to SSE for anything live. Infrastructure is deliberately boring: backend, both databases and the dashboard all sit on one DigitalOcean droplet running 24/7, up for months at a stretch. The numbers above come straight out of that database.",
       tech: [
         "Python",
         "FastAPI",
@@ -211,7 +209,9 @@ export const siteData: SiteData = {
     {
       title: "Buckets",
       summary:
-        "Something I've been thinking about more recently. People carry around a lot that matters — to-do lists, half-formed ideas, the things they know they'll forget — and it ends up scattered across notes apps, Notion docs and everywhere else, so there's always a delay between having a thought and finding it again. Buckets is my attempt at collapsing that into a single entry point: you say the thought, and instead of you deciding where it goes, AI files it for you and learns from any correction you make. Still early, and still very much something I'm working out.",
+        "Something I've been thinking about more recently. The stuff that matters ends up scattered across notes apps, Notion docs and everywhere else, so there's always a delay between having a thought and finding it again. Buckets collapses that into one entry point: you say the thought, and instead of you deciding where it goes, AI files it and learns from any correction you make. Still early.",
+      technical:
+        "Next.js with server actions over a SQLite store. You dump a thought in one breath, often more than one thing at a time, and a single model call splits it into separate items and files each one into a bucket, with a type and a deadline if you gave one. Nothing is written until you press Create. When it files something wrong and you move it, that correction gets recorded and applied on the next sort, and as items pile up it re-reads your buckets and proposes splits or regroupings using only your own words.",
       tech: [
         "TypeScript",
         "Next.js",
@@ -232,7 +232,9 @@ export const siteData: SiteData = {
     {
       title: "Portfolio Site",
       summary:
-        "The thing you're looking at. Started as an excuse to point Claude Code, Codex and Google Stitch at the same repo and see what came out, and turned into a rabbit hole of typing animations, scrambling nav links and little corner brackets that appear when you hover. No backend, no database, no analytics — just one big typed object and an unreasonable amount of framer-motion. Poke at it.",
+        "The thing you're looking at. Started as an excuse to point Claude Code, Codex and Google Stitch at the same repo and see what came out, and turned into a rabbit hole of typing animations, scrambling nav links and little corner brackets that appear when you hover. Poke at it.",
+      technical:
+        "Next.js App Router, statically prerendered, with no backend, no database and no analytics. Every section renders at build time from one typed object in constants/, the diagrams are hand-authored inline SVG rather than a charting library, and the typing and scramble effects are IntersectionObserver-driven components that respect prefers-reduced-motion. Deploys to Vercel on push to main.",
       tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion"],
       githubUrl: "https://github.com/kevinmao660/portfolio_site",
       liveUrl: "",
