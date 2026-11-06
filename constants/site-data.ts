@@ -14,6 +14,8 @@ export type ExperienceItem = {
   role: string;
   /** Team within the company, shown on the role line under the bold company name. */
   team?: string;
+  /** Company homepage; the bold company name links here when set. */
+  url?: string;
   period: string;
   location: string;
   /**
@@ -134,12 +136,14 @@ export const siteData: SiteData = {
   experience: [
     {
       company: "Abridge",
+      url: "https://www.abridge.com/",
       role: "Member of Technical Staff Intern",
       period: "Jan 2027 — Mar 2027",
       location: "San Francisco, CA",
     },
     {
       company: "Genius Sports (Second Spectrum)",
+      url: "https://www.geniussports.com/",
       role: "Software Engineer Intern",
       team: "Dragon AI & CV Infrastructure",
       period: "May 2026 — Aug 2026",
@@ -149,6 +153,7 @@ export const siteData: SiteData = {
     },
     {
       company: "Fidelity Investments",
+      url: "https://www.fidelity.com/",
       role: "Software Engineer Intern",
       team: "Asset Management Database Automation",
       period: "Jun 2025 — Aug 2025",

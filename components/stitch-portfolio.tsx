@@ -189,12 +189,28 @@ export function StitchPortfolio() {
                     }`}
                   />
                   <div className="mb-2 flex flex-col items-start md:flex-row md:items-center md:justify-between">
-                    <TypeOnView
-                      as="h3"
-                      text={item.company}
-                      className="font-headline text-xl font-bold tracking-tight text-black"
-                      stepMs={22}
-                    />
+                    {item.url ? (
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="decoration-2 underline-offset-4 hover:underline"
+                      >
+                        <TypeOnView
+                          as="h3"
+                          text={item.company}
+                          className="font-headline text-xl font-bold tracking-tight text-black"
+                          stepMs={22}
+                        />
+                      </a>
+                    ) : (
+                      <TypeOnView
+                        as="h3"
+                        text={item.company}
+                        className="font-headline text-xl font-bold tracking-tight text-black"
+                        stepMs={22}
+                      />
+                    )}
                     <span
                       className={`font-mono px-2 py-1 text-[10px] uppercase text-black ${
                         index === 0 ? "bg-black/5" : "border border-black/20 text-black/60"
