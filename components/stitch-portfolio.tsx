@@ -191,7 +191,7 @@ export function StitchPortfolio() {
                   <div className="mb-2 flex flex-col items-start md:flex-row md:items-center md:justify-between">
                     <TypeOnView
                       as="h3"
-                      text={item.role}
+                      text={item.company}
                       className="font-headline text-xl font-bold tracking-tight text-black"
                       stepMs={22}
                     />
@@ -205,7 +205,7 @@ export function StitchPortfolio() {
                   </div>
                   <TypeOnView
                     as="p"
-                    text={item.location ? `${item.company} · ${item.location}` : item.company}
+                    text={[item.role, item.team, item.location].filter(Boolean).join(" · ")}
                     className="font-mono mb-4 text-xs text-black/50"
                     stepMs={18}
                     delayMs={80}

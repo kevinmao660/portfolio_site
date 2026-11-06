@@ -12,6 +12,8 @@ export type MetricItem = {
 export type ExperienceItem = {
   company: string;
   role: string;
+  /** Team within the company, shown on the role line under the bold company name. */
+  team?: string;
   period: string;
   location: string;
   /**
@@ -133,20 +135,22 @@ export const siteData: SiteData = {
     {
       company: "Abridge",
       role: "Member of Technical Staff Intern",
-      period: "Incoming",
-      location: "",
+      period: "Jan 2027 — Mar 2027",
+      location: "San Francisco, CA",
     },
     {
-      company: "Genius Sports (Second Spectrum) — Dragon AI & CV Infrastructure Team",
+      company: "Genius Sports (Second Spectrum)",
       role: "Software Engineer Intern",
+      team: "Dragon AI & CV Infrastructure",
       period: "May 2026 — Aug 2026",
       location: "New York, NY",
       summary:
         "I think there's a lot of potential in the sports and AI stats industry, and it's pretty clearly going to be big. Dragon is the platform that ingests game data and tracks NBA stats straight off the camera feeds, every point, rebound, pass, assist, and I worked on the operations layer around it. That got me a lot more interested in AI infra in general, down to things like token usage. There are way more parts to the business than I originally thought, and a ton of potential in the ad space and in automating the data side of it. Genuinely cool team to be on, too.",
     },
     {
-      company: "Fidelity Investments — Asset Management Database Automation",
+      company: "Fidelity Investments",
       role: "Software Engineer Intern",
+      team: "Asset Management Database Automation",
       period: "Jun 2025 — Aug 2025",
       location: "Durham, NC",
       summary:
