@@ -131,6 +131,12 @@ export const siteData: SiteData = {
   ],
   experience: [
     {
+      company: "Abridge",
+      role: "Member of Technical Staff Intern",
+      period: "Incoming",
+      location: "",
+    },
+    {
       company: "Genius Sports (Second Spectrum) — Dragon AI & CV Infrastructure Team",
       role: "Software Engineer Intern",
       period: "May 2026 — Aug 2026",
@@ -170,7 +176,7 @@ export const siteData: SiteData = {
     {
       title: "Polymarket Incentives Bot",
       summary:
-        "The thing I've spent the most time on recently. Prediction markets pay you just for leaving orders resting on the book, which sounded strange enough that I wanted to see if the whole loop could run itself. It can. It's been live for a few months, and most of the work since has gone into which markets are actually worth the capital.",
+        "The thing I've spent the most time on recently. Prediction markets pay you just for leaving orders resting on the book, which sounded strange enough that I wanted to see if the whole loop could run itself. It can. It's been live for 161 days across 11,464 markets, and most of the work since has gone into the statistical models that decide which ones are actually worth the capital.",
       technical:
         "One FastAPI process holds every long-lived component and exposes them over REST plus SSE streams. A separate WebSocket proxy owns the single upstream connection and fans it out to the workers and the browser, so nothing opens a duplicate feed. State is split by durability: Postgres for run history and the market catalog, SQLite for cache and local settings. The frontend is a React dashboard reading over REST and subscribing to SSE for anything live. Infrastructure is deliberately boring: backend, both databases and the dashboard all sit on one DigitalOcean droplet running 24/7, up for months at a stretch. The numbers above come straight out of that database.",
       tech: [
@@ -198,13 +204,13 @@ export const siteData: SiteData = {
         testLines: 4769,
       },
       dbStats: [
-        { label: "Deploys", value: 150320 },
+        { label: "Deploys", value: 181296 },
         { label: "Hours of uptime", value: 670 },
         { label: "Return on seed", value: 132, suffix: "x" },
       ],
       dbStatsCaption:
-        "85 days live · ~1 deploy every 49s, nonstop · 5,063 distinct markets traded · most persistent: 2,805 redeploys on a single tennis match in one 5h22m window",
-      dbStatsAsOf: "2026-08-22",
+        "161 days live · ~1 deploy every 77s · 11,464 distinct markets traded · most persistent: 2,805 redeploys on a single tennis match in one 5h22m window",
+      dbStatsAsOf: "2026-11-05",
     },
     {
       title: "Buckets",

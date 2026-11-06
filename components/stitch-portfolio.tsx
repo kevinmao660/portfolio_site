@@ -127,7 +127,7 @@ export function StitchPortfolio() {
               as="p"
               text={site.bio}
               className="font-mono max-w-2xl text-sm leading-relaxed text-black/70 md:text-lg"
-              stepMs={28}
+              stepMs={20}
               delayMs={420}
             />
           </div>
@@ -205,7 +205,7 @@ export function StitchPortfolio() {
                   </div>
                   <TypeOnView
                     as="p"
-                    text={`${item.company} · ${item.location}`}
+                    text={item.location ? `${item.company} · ${item.location}` : item.company}
                     className="font-mono mb-4 text-xs text-black/50"
                     stepMs={18}
                     delayMs={80}

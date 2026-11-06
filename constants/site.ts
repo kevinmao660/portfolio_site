@@ -8,7 +8,7 @@ export const site = {
   heroTitleLine1: "KEVIN",
   heroTitleLine2: "MAO",
   /** Hero line under the name */
-  bio: "Wanted to see how vibe coding a frontend works, and to put some of the things I've been working on in one place. Interested in agents, distributed systems, and the infrastructure you have to build to keep them up and running.",
+  bio: "I'm Kevin, a CS student at Duke concentrating in AI and ML. So far I've been exploring technology across very different domains, from finance to live sports, and I've come to really appreciate how it scales differently in each of them. What I like most is owning a system end to end and thinking about how it breaks, and next I want to bring that to agents, where making them reliable is a really interesting engineering problem.",
   /** Search results and link unfurls — the hero line is too short to say anything there. */
   metaDescription:
     "Kevin Mao, CS student at Duke. Projects, experience, and the things I've been building.",
